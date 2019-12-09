@@ -268,7 +268,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 				TetrisBoard.this.repaint();
 			}
 		});
-
+		
 		checkBGM.setBounds(PANEL_WIDTH - BLOCK_SIZE * 7 + 35, 25, 95, 20); // 배경음악 checkbox 위치 및 디자인(millions)
 		checkBGM.setBackground(Color.white);
 		checkBGM.setForeground(Color.black);
@@ -321,7 +321,9 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 
 		comboSpeed.setBounds(PANEL_WIDTH - BLOCK_SIZE * 13, 5, 45, 20); // 속도 숫자 표시 왼쪽으로 이동.(millions)
 		this.add(comboSpeed);
-
+		if (TetrisMain.GameMode == 3 || TetrisMain.GameMode == 2)
+			comboSpeed.setEnabled(false);
+		// when you playing mapmode, timemode of tetris, you can't choose starting gamespeed hwadong
 //		this.add(systemMsg); minshik 가림
 //		this.add(messageArea); minshik 가림
 		this.add(btnStart);
@@ -427,7 +429,6 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			//mapblock.setCustomBlock(true);
 			//blockList.add(mapblock);
 			//map[20][1] = mapblock;
-
 			char rnd = 'A';
 			for(int i=11; i<21; i++) {
 				for(int j=0; j<8; j++) {
@@ -745,8 +746,11 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 				countDown--;
 				if (countDown == 0) {
 
-					if (controller != null && !controller.moveDown())
+					if (controller != null && !controller.moveDown()) {
 						this.fixingTetrisBlock();
+						continue;
+					}
+					
 				}
 				this.repaint();
 
@@ -757,7 +761,8 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 				// countMove = (21 - (int) comboSpeed.getSelectedItem()) * 5;
 				countMove = (21 - (int) gameSpeed) * 5;
 				if (controller != null && !controller.moveDown())
-					countDown = down;
+					this.fixingTetrisBlock(); // 속도가 올라갈떄 바닥에 닿았음애도 불구하고 블럭이 나오지 않는 버그 수정 - hwaaad
+					//countDown = down; 로그를 찍어보니까 여기서 꼬이게 된다. -> 그냥 바닥에 닿는걸로 인지하고 그 자리에 고정을 시켜버리는 방법으로 해결
 				else
 					this.showGhost();
 			}
@@ -769,6 +774,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 					addBlockLine(1);
 				}
 			}
+			
 			// 시간별 난이도 조절 hwaaad
 			
 			sec = secToMMSS(  ((int) System.currentTimeMillis() / 1000) - oldTime  );
@@ -861,7 +867,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		      if(CustomBlockNum == 0) {
 		    	  
 					// 맵모드 종료조건
-		    	  if(TetrisMain.mapLevel > 6) { // 만약 해당 맵이 파이널 맵이였다면? minshik
+		    	  if(TetrisMain.mapLevel >= 6) { // 만약 해당 맵이 파이널 맵이였다면? minshik , 종료 조건 수정 hwadong
 		    		  this.gameEndCallBack(); // 게임을 종료한다.
 		    	  }
 		    	  
@@ -902,13 +908,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	      
 		
 		
-		// hwadong
-		if (((int)myScore / 500 >= (gameSpeed - initSpeed + 1)) && gameSpeed < 20) {
-			++gameSpeed;
-			changeSpeed(gameSpeed);
-			System.out.println("myScore : " + myScore + "/ gameSpeed : " + gameSpeed);
-			this.repaint();
-		}
+		
 		
 		
 		
@@ -1102,6 +1102,13 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 				
 				pk += 1;
 			}
+			// hwadong
+			if (((int)myScore / 500 >= (gameSpeed - initSpeed+1)) && gameSpeed < 20) {
+				++gameSpeed;
+				changeSpeed(gameSpeed);
+				System.out.println("myScore : " + myScore + "/ gameSpeed : " + gameSpeed);
+			}
+			this.repaint();
 
 		}
 		return isCombo;
@@ -1144,6 +1151,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 
 		this.dropBoard(lineNumber, 1);
 		//this.myScore+= 50; // hwaaad
+		
 	}
 
 	/**
@@ -1158,15 +1166,22 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		}
 		GameEndSound = new Music("GameOver.mp3", false);
 		GameEndSound.start();
-//		ImageIcon popupicon = new ImageIcon(TetrisMain.class.getResource("../../../Images/GAMEOVER.PNG"));
-//		JOptionPane.showMessageDialog(null, null, "The End", JOptionPane.ERROR_MESSAGE, popupicon);
+
 		stopwatch(0);
 		comboSpeed.setEnabled(true); // combobox 잠금 hwadong
 		System.out.println("\n\n 게임종료시의 결과  : \n 사용자아이디 : " + TetrisMain.userId + "\n 게임모드  : " + TetrisMain.GameMode + "\n 스코어 : " + myScore + "\n 경과시간 : " + timerBuffer);
 		
 		
 		if(TetrisMain.isLogin) { // 로그인 되어 있을 경우에 서버로 전송 minshik 
-			getResult(TetrisMain.userId, TetrisMain.GameMode, myScore, timerBuffer);
+			if(TetrisMain.GameMode != 3) { // 맵모드가 아닐 경우에만 서버로 보냄 minshik
+				getResult(TetrisMain.userId, TetrisMain.GameMode, myScore, timerBuffer);
+				return;
+			}
+			
+			ImageIcon popupicon = new ImageIcon(TetrisMain.class.getResource("../../../Images/GAMEOVER.PNG"));
+			JOptionPane.showMessageDialog(null, null, "The End", JOptionPane.ERROR_MESSAGE, popupicon);
+			
+			
 		}else{ // 로그인 하지 않았을 경우
 			new GameResultInfoWindow(myScore, TetrisMain.GameMode, timerBuffer);
 		}
@@ -1253,6 +1268,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 	 * @param removeMaxLine 한번에 지운 줄수
 	 */
 	public void getFixBlockCallBack(ArrayList<Block> blockList, int removeCombo, int removeMaxLine) {
+		/*
 		if (removeCombo < 3) {
 			if (removeMaxLine == 3)
 				client.addBlock(1);
@@ -1272,7 +1288,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 				client.addBlock(5);
 			else
 				client.addBlock(2);
-		}
+		}*/
 	}
 
 	/**
@@ -1419,13 +1435,15 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 		if (e.getSource() == btnStart) { //게임 시작버튼 누르면 , 민식
 			secToMMSS(  ((int) System.currentTimeMillis() / 1000) - oldTime  );
 			TetrisMain.mapLevel = 1; // 맵모드 레벨 1부터 만듬, 민식
-
-			if (client != null) {
-				client.gameStart((int) comboSpeed.getSelectedItem());
-			} else {
-				this.gameStart((int) comboSpeed.getSelectedItem());
+			if(TetrisMain.GameMode == 1) { // normal 모드일 떄만 lv 수정 가능하도록
+				if (client != null) {
+					client.gameStart((int) comboSpeed.getSelectedItem());
+				} else {
+					this.gameStart((int) comboSpeed.getSelectedItem());
+				}
+			}else {
+				this.gameStart(1); // when you restart map-mode/time-mode, gameSpeed will be reset 
 			}
-			
 		} else if (e.getSource() == btnExit) {
 
 			if (GameMusic != null && GameMusic.isAlive()) {
@@ -1435,6 +1453,9 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			if (client != null) {
 				if (tetris.isNetwork()) {
 					client.closeNetwork(tetris.isServer());
+
+					System.exit(0); // prevention of networking error - hwaaad
+
 				}
 			} else {
 				System.exit(0);
@@ -1596,7 +1617,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 				System.out.println(gameResultRepo.toString());
 				
 				// 게임 결과창을 띄어줌
-				new GameResultInfoWindow(myScore, Integer.valueOf(gameResultRepo.getMode()), Integer.valueOf(gameResultRepo.getRanking()), gameResultRepo.getInfo());	
+				new GameResultInfoWindow(myScore, Integer.valueOf(gameResultRepo.getMode()), Integer.valueOf(gameResultRepo.getRanking()), gameResultRepo.getInfo(), timebuffer);	
 			}
 			@Override
 			public void onFailure(Call<GameResultRepo> arg0, Throwable e) {
@@ -1647,125 +1668,58 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 
 		}
 			break;
-		case 3:
+		case 3: // 3단계 Hi - hwadong
 		{
-			
 			Block mapblock = new Block(0, 0, Color.decode("0x66CCCC"), Color.decode("0x66CCCC"));
-			mapblock.setFixGridXY(1,20);
-			mapblock.setCustomBlock(true);
-			blockList.add(mapblock);
-			map[20][1] = mapblock;
-			mapblock = new Block(0, 0, Color.decode("0x66CCCC"), Color.decode("0x66CCCC"));
-			mapblock.setFixGridXY(1,19);
-			mapblock.setCustomBlock(true);
-			blockList.add(mapblock);
-			map[19][1] = mapblock;
-			mapblock = new Block(0, 0, Color.decode("0x66CCCC"), Color.decode("0x66CCCC"));
-			mapblock.setFixGridXY(1,18);
-			mapblock.setCustomBlock(true);
-			blockList.add(mapblock);
-			map[18][1] = mapblock;
-			mapblock = new Block(0, 0, Color.decode("0x66CCCC"), Color.decode("0x66CCCC"));
-			mapblock.setFixGridXY(1,17);
-			mapblock.setCustomBlock(true);
-			blockList.add(mapblock);
-			map[17][1] = mapblock;
-			mapblock = new Block(0, 0, Color.decode("0x66CCCC"), Color.decode("0x66CCCC"));
-			mapblock.setFixGridXY(1,16);
-			mapblock.setCustomBlock(true);
-			blockList.add(mapblock);
-			map[16][1] = mapblock;
 			
-			
-			mapblock = new Block(0, 0, Color.decode("0x66CCCC"), Color.decode("0x66CCCC"));
+			for(int i = 16; i <= 20; i++) {
+				mapblock = new Block(0, 0, Color.decode("0x66CCCC"), Color.decode("0x66CCCC"));
+				mapblock.setFixGridXY(1,i);
+				mapblock.setCustomBlock(true);
+				blockList.add(mapblock);
+				map[i][1] = mapblock;
+				mapblock = new Block(0, 0, Color.decode("0x66CCCC"), Color.decode("0x66CCCC"));
+				mapblock.setFixGridXY(3,i);
+				mapblock.setCustomBlock(true);
+				blockList.add(mapblock);
+				map[i][3] = mapblock;
+			}
+			mapblock = new Block(0, 0, Color.decode("0x66CCCC"), Color.decode("0x66CCCC"));	
 			mapblock.setFixGridXY(2,18);
 			mapblock.setCustomBlock(true);
 			blockList.add(mapblock);
 			map[18][2] = mapblock;
 		
-			
-			mapblock = new Block(0, 0, Color.decode("0x66CCCC"), Color.decode("0x66CCCC"));
-			mapblock.setFixGridXY(3,20);
-			mapblock.setCustomBlock(true);
-			blockList.add(mapblock);
-			map[20][3] = mapblock;
-			mapblock = new Block(0, 0, Color.decode("0x66CCCC"), Color.decode("0x66CCCC"));
-			mapblock.setFixGridXY(3,19);
-			mapblock.setCustomBlock(true);
-			blockList.add(mapblock);
-			map[19][3] = mapblock;
-			mapblock = new Block(0, 0, Color.decode("0x66CCCC"), Color.decode("0x66CCCC"));
-			mapblock.setFixGridXY(3,18);
-			mapblock.setCustomBlock(true);
-			blockList.add(mapblock);
-			map[18][3] = mapblock;
-			mapblock = new Block(0, 0, Color.decode("0x66CCCC"), Color.decode("0x66CCCC"));
-			mapblock.setFixGridXY(3,17);
-			mapblock.setCustomBlock(true);
-			blockList.add(mapblock);
-			map[17][3] = mapblock;
-			mapblock = new Block(0, 0, Color.decode("0x66CCCC"), Color.decode("0x66CCCC"));
-			mapblock.setFixGridXY(3,16);
-			mapblock.setCustomBlock(true);
-			blockList.add(mapblock);
-			map[16][3] = mapblock;
-			
-			
-			mapblock = new Block(0, 0, Color.decode("0x66CCCC"), Color.decode("0x66CCCC"));
-			mapblock.setFixGridXY(5,20);
-			mapblock.setCustomBlock(true);
-			blockList.add(mapblock);
-			map[20][5] = mapblock;
-			mapblock = new Block(0, 0, Color.decode("0x66CCCC"), Color.decode("0x66CCCC"));
-			mapblock.setFixGridXY(5,19);
-			mapblock.setCustomBlock(true);
-			blockList.add(mapblock);
-			map[19][5] = mapblock;
-			mapblock = new Block(0, 0, Color.decode("0x66CCCC"), Color.decode("0x66CCCC"));
-			mapblock.setFixGridXY(5,18);
-			mapblock.setCustomBlock(true);
-			blockList.add(mapblock);
-			map[18][5] = mapblock;
-			
-			mapblock = new Block(0, 0, Color.decode("0x66CCCC"), Color.decode("0x66CCCC"));
-			mapblock.setFixGridXY(5,16);
-			mapblock.setCustomBlock(true);
-			blockList.add(mapblock);
-			map[16][5] = mapblock;
-			
-			
-			
-			mapblock = new Block(0, 0, Color.decode("0xFF3333"), Color.decode("0xFF3333"));
-			mapblock.setFixGridXY(7,20);
-			mapblock.setCustomBlock(true);
-			blockList.add(mapblock);
-			map[20][7] = mapblock;
-			
-			
-			mapblock = new Block(0, 0, Color.decode("0xFF3333"), Color.decode("0xFF3333"));
-			mapblock.setFixGridXY(7,18);
-			mapblock.setCustomBlock(true);
-			blockList.add(mapblock);
-			map[18][7] = mapblock;
-			mapblock = new Block(0, 0, Color.decode("0xFF3333"), Color.decode("0xFF3333"));
-			mapblock.setFixGridXY(7,17);
-			mapblock.setCustomBlock(true);
-			blockList.add(mapblock);
-			map[17][7] = mapblock;
-			mapblock = new Block(0, 0, Color.decode("0xFF3333"), Color.decode("0xFF3333"));
-			mapblock.setFixGridXY(7,16);
-			mapblock.setCustomBlock(true);
-			blockList.add(mapblock);
-			map[16][7] = mapblock;
-			mapblock = new Block(0, 0, Color.decode("0xFF3333"), Color.decode("0xFF3333"));
-			mapblock.setFixGridXY(7,15);
-			mapblock.setCustomBlock(true);
-			blockList.add(mapblock);
-			map[15][7] = mapblock;
+			for(int i = 15; i<= 20; i++) {
+				if(i == 15 || i == 17) {
+					mapblock = new Block(0, 0, Color.decode("0xFF3333"), Color.decode("0xFF3333"));
+					mapblock.setFixGridXY(7,i);
+					mapblock.setCustomBlock(true);
+					blockList.add(mapblock);
+					map[i][7] = mapblock;				
+				}else if(i == 19) {
+					mapblock = new Block(0, 0, Color.decode("0x66CCCC"), Color.decode("0x66CCCC"));
+					mapblock.setFixGridXY(5,i);
+					mapblock.setCustomBlock(true);
+					blockList.add(mapblock);
+					map[i][5] = mapblock;
+				}else {
+					mapblock = new Block(0, 0, Color.decode("0x66CCCC"), Color.decode("0x66CCCC"));
+					mapblock.setFixGridXY(5,i);
+					mapblock.setCustomBlock(true);
+					blockList.add(mapblock);
+					map[i][5] = mapblock;
+					mapblock = new Block(0, 0, Color.decode("0xFF3333"), Color.decode("0xFF3333"));
+					mapblock.setFixGridXY(7,i);
+					mapblock.setCustomBlock(true);
+					blockList.add(mapblock);
+					map[i][7] = mapblock;
+				}
+			}
 		}
 			break;
 			
-		case 4: // 레벨 4 : 체리
+		case 5: // 레벨 5 : 체리
 		{
      		for( int i=1; i<6; i ++) {
      			for( int k=1; k<11; k++) {
@@ -1843,11 +1797,12 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
      	}
 		break;
 
-		case 5: // 머쓱타드 레벨  5 : 머쓱타드 
+		case 6:
+		{	// 머쓱타드 레벨  6 : 머쓱타드 
 			// 정한교 머쓱타드 맵 추가 
      		
      		// 머쓱타드 몸통
-     		for( int i=1; i<12; i ++) {
+			for( int i=1; i<12; i ++) {
      			for( int k=1; k<11; k++) {
      				
      				if (i==1 && (k!=2 && k!=3 && k!=4 && k!=5 && k!=6 && k!=7 ))
@@ -1963,13 +1918,14 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
      		
      
      		}
-     		
-			
-			break;
-			
 		
 			
-		case 6: // final 맵
+		}
+     			
+			break;
+			
+			
+		case 4: // 4단계 맵
 		{
 			// 정한교 코끼리 맵 추가  
 	        
@@ -2037,7 +1993,7 @@ public class TetrisBoard extends JPanel implements Runnable, KeyListener, MouseL
 			break;
 		}
 	}
+	
+
 }
-
-
-
+>>>>>>> upstream/master

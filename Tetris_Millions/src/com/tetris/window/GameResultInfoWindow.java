@@ -56,11 +56,12 @@ public class GameResultInfoWindow{
 	
 	
 
-	public GameResultInfoWindow(int gamescore, int gamemode, int ranking, String info) {
+	public GameResultInfoWindow(int gamescore, int gamemode, int ranking, String info, String time) {
 		this.gameScore = gamescore;	
 		this.gameMode = gamemode;
 		this.info = info;
 		this.ranking = ranking;
+		this.time = time;
 	
 		
 		
@@ -100,239 +101,483 @@ public class GameResultInfoWindow{
 		
 		
 		if(this.info.equalsIgnoreCase("new")) {
-		
-			JLabel record = new JLabel("게임결과"); 
-			record.setBounds(100,40,100,40);
-			record.setFont(new Font("Monospaced", Font.BOLD, 13));
-			record.setForeground(Color.BLACK);
+				
 			
+			if(TetrisMain.GameMode == 3) {
+				JLabel record = new JLabel("게임결과"); 
+				record.setBounds(100,40,100,40);
+				record.setFont(new Font("Monospaced", Font.BOLD, 13));
+				record.setForeground(Color.BLACK);
+				
+				
+				JLabel userId = new JLabel(TetrisMain.userId + " 님");
+				userId.setBounds(100, 100, 100, 40);
+				userId.setForeground(Color.black);
+				
+				
 			
-			JLabel userId = new JLabel(TetrisMain.userId + " 님");
-			userId.setBounds(100, 100, 100, 40);
-			userId.setForeground(Color.black);
-			
-			
-			JLabel score = new JLabel("★★★★새로운 점수★★★★");
-			score.setBounds(100, 120, 200, 40);
-			score.setFont(new Font("Monospaced", Font.BOLD, 11));
-			score.setForeground(Color.BLACK);
-			
-			
-			JLabel score_ = new JLabel(String.valueOf(gameScore));
-			score_.setBounds(100, 140, 100, 40);
-			score_.setForeground(Color.BLACK);
-			score_.setFont(new Font("Monospaced", Font.BOLD, 20));
-			
-			
-			JLabel raking = new JLabel("★★★★새로운 랭킹★★★★ ");
-			raking.setBounds(100,180,200,40);
-			raking.setFont(new Font("Monospaced", Font.BOLD, 11));
-			raking.setForeground(Color.BLACK);
-			
-			
-			JLabel raking_ = new JLabel(String.valueOf(ranking));
-			raking_.setBounds(100,200,140,40);				
-			raking_.setForeground(Color.BLACK);
-			raking_.setFont(new Font("Monospaced", Font.BOLD, 20));
-			
-			
-			JLabel hyperlink = new JLabel("랭킹 보기");
-			hyperlink.setBounds(100,220,140,40);				
-			hyperlink.setForeground(Color.BLUE.darker());
-			hyperlink.setFont(new Font("Monospaced", Font.BOLD, 20));
-			hyperlink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			hyperlink.addMouseListener(new MouseAdapter() {
-				 
-			    @Override
-			    public void mouseClicked(MouseEvent e) {
-			        // the user clicks on the label
-			    
+				JLabel score = new JLabel("★★★★새로운 경과시간★★★★");
+				score.setBounds(100, 120, 200, 40);
+				score.setFont(new Font("Monospaced", Font.BOLD, 11));
+				score.setForeground(Color.BLACK);
+				
+				
+				JLabel score_ = new JLabel(String.valueOf(time));
+				score_.setBounds(100, 140, 100, 40);
+				score_.setForeground(Color.BLACK);
+				score_.setFont(new Font("Monospaced", Font.BOLD, 20));
+				
+				
+				JLabel raking = new JLabel("★★★★새로운 랭킹★★★★ ");
+				raking.setBounds(100,180,200,40);
+				raking.setFont(new Font("Monospaced", Font.BOLD, 11));
+				raking.setForeground(Color.BLACK);
+				
+				
+				JLabel raking_ = new JLabel(String.valueOf(ranking));
+				raking_.setBounds(100,200,140,40);				
+				raking_.setForeground(Color.BLACK);
+				raking_.setFont(new Font("Monospaced", Font.BOLD, 20));
+				
+				
+				JLabel hyperlink = new JLabel("랭킹 보기");
+				hyperlink.setBounds(100,220,140,40);				
+				hyperlink.setForeground(Color.BLUE.darker());
+				hyperlink.setFont(new Font("Monospaced", Font.BOLD, 20));
+				hyperlink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				hyperlink.addMouseListener(new MouseAdapter() {
+					 
+				    @Override
+				    public void mouseClicked(MouseEvent e) {
+				        // the user clicks on the label
+				    
 
-			            try {
-							Desktop.getDesktop().browse(new URI("http://15.164.218.103/result.php?id=" + TetrisMain.userId));
-						} catch (URISyntaxException | IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-						
-			            
-			    }
-			 
-			    @Override
-			    public void mouseEntered(MouseEvent e) {
-			        // the mouse has entered the label
-			    }
-			 
-			    @Override
-			    public void mouseExited(MouseEvent e) {
-			        // the mouse has exited the label
-			    }
-			});
+				            try {
+								Desktop.getDesktop().browse(new URI("http://15.164.218.103/result.php?id=" + TetrisMain.userId));
+							} catch (URISyntaxException | IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							
+				            
+				    }
+				 
+				    @Override
+				    public void mouseEntered(MouseEvent e) {
+				        // the mouse has entered the label
+				    }
+				 
+				    @Override
+				    public void mouseExited(MouseEvent e) {
+				        // the mouse has exited the label
+				    }
+				});
+				
+				
+				
+				
+				frame.add(record);
+				frame.add(userId);
+				frame.add(score);
+				frame.add(score_);
+				frame.add(raking);
+				frame.add(raking_);
+				frame.add(hyperlink);
+			}else {
+				JLabel record = new JLabel("게임결과"); 
+				record.setBounds(100,40,100,40);
+				record.setFont(new Font("Monospaced", Font.BOLD, 13));
+				record.setForeground(Color.BLACK);
+				
+				
+				JLabel userId = new JLabel(TetrisMain.userId + " 님");
+				userId.setBounds(100, 100, 100, 40);
+				userId.setForeground(Color.black);
+				
+				
 			
+				JLabel score = new JLabel("★★★★새로운 점수★★★★");
+				score.setBounds(100, 120, 200, 40);
+				score.setFont(new Font("Monospaced", Font.BOLD, 11));
+				score.setForeground(Color.BLACK);
+				
+				
+				JLabel score_ = new JLabel(String.valueOf(gameScore));
+				score_.setBounds(100, 140, 100, 40);
+				score_.setForeground(Color.BLACK);
+				score_.setFont(new Font("Monospaced", Font.BOLD, 20));
+				
+				
+				JLabel raking = new JLabel("★★★★새로운 랭킹★★★★ ");
+				raking.setBounds(100,180,200,40);
+				raking.setFont(new Font("Monospaced", Font.BOLD, 11));
+				raking.setForeground(Color.BLACK);
+				
+				
+				JLabel raking_ = new JLabel(String.valueOf(ranking));
+				raking_.setBounds(100,200,140,40);				
+				raking_.setForeground(Color.BLACK);
+				raking_.setFont(new Font("Monospaced", Font.BOLD, 20));
+				
+				
+				JLabel hyperlink = new JLabel("랭킹 보기");
+				hyperlink.setBounds(100,220,140,40);				
+				hyperlink.setForeground(Color.BLUE.darker());
+				hyperlink.setFont(new Font("Monospaced", Font.BOLD, 20));
+				hyperlink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				hyperlink.addMouseListener(new MouseAdapter() {
+					 
+				    @Override
+				    public void mouseClicked(MouseEvent e) {
+				        // the user clicks on the label
+				    
+
+				            try {
+								Desktop.getDesktop().browse(new URI("http://15.164.218.103/result.php?id=" + TetrisMain.userId));
+							} catch (URISyntaxException | IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							
+				            
+				    }
+				 
+				    @Override
+				    public void mouseEntered(MouseEvent e) {
+				        // the mouse has entered the label
+				    }
+				 
+				    @Override
+				    public void mouseExited(MouseEvent e) {
+				        // the mouse has exited the label
+				    }
+				});
+				
+				
+				
+				
+				frame.add(record);
+				frame.add(userId);
+				frame.add(score);
+				frame.add(score_);
+				frame.add(raking);
+				frame.add(raking_);
+				frame.add(hyperlink);
+			}
+		
 			
-			
-			
-			frame.add(record);
-			frame.add(userId);
-			frame.add(score);
-			frame.add(score_);
-			frame.add(raking);
-			frame.add(raking_);
-			frame.add(hyperlink);
 			
 			
 		}else if (this.info.equalsIgnoreCase("high")) {
-			JLabel record = new JLabel("게임결과"); 
-			record.setBounds(100,40,100,40);
-			record.setFont(new Font("Monospaced", Font.BOLD, 13));
-			record.setForeground(Color.BLACK);
-			JLabel userId = new JLabel(TetrisMain.userId + " 님");
-			userId.setBounds(100, 100, 100, 40);
-			userId.setForeground(Color.black);
 			
 			
-			JLabel score = new JLabel("☆☆☆☆점수 갱신☆☆☆☆");
-			score.setBounds(100, 120, 200, 40);
-			score.setFont(new Font("Monospaced", Font.BOLD, 11));
-			score.setForeground(Color.BLACK);
 			
-			
-			JLabel score_ = new JLabel(String.valueOf(gameScore));
-			score_.setBounds(100, 140, 100, 40);
-			score_.setForeground(Color.BLACK);
-			score_.setFont(new Font("Monospaced", Font.BOLD, 20));
-			
-			
-			JLabel raking = new JLabel("랭킹");
-			raking.setBounds(100,180,140,40);
-			raking.setFont(new Font("Monospaced", Font.BOLD, 11));
-			raking.setForeground(Color.BLACK);
-			
-			
-			JLabel raking_ = new JLabel(String.valueOf(ranking));
-			raking_.setBounds(100,200,140,40);		
-			raking_.setForeground(Color.BLACK);
-			raking_.setFont(new Font("Monospaced", Font.BOLD, 20));
-			
-			
-			JLabel hyperlink = new JLabel("랭킹 보기");
-			hyperlink.setBounds(50,220,140,40);				
-			hyperlink.setForeground(Color.BLUE.darker());
-			hyperlink.setFont(new Font("Monospaced", Font.BOLD, 20));
-			hyperlink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			hyperlink.addMouseListener(new MouseAdapter() {
-				 
-			    @Override
-			    public void mouseClicked(MouseEvent e) {
-			        // the user clicks on the label
-			    
+			if(TetrisMain.GameMode == 3) {
+				JLabel record = new JLabel("게임결과"); 
+				record.setBounds(100,40,100,40);
+				record.setFont(new Font("Monospaced", Font.BOLD, 13));
+				record.setForeground(Color.BLACK);
+				JLabel userId = new JLabel(TetrisMain.userId + " 님");
+				userId.setBounds(100, 100, 100, 40);
+				userId.setForeground(Color.black);
+				
+				
+				JLabel score = new JLabel("☆☆☆☆경과 시간 갱신☆☆☆☆");
+				score.setBounds(100, 120, 200, 40);
+				score.setFont(new Font("Monospaced", Font.BOLD, 11));
+				score.setForeground(Color.BLACK);
+				
+				
+				JLabel score_ = new JLabel(String.valueOf(time));
+				score_.setBounds(100, 140, 100, 40);
+				score_.setForeground(Color.BLACK);
+				score_.setFont(new Font("Monospaced", Font.BOLD, 20));
+				
+				
+				JLabel raking = new JLabel("랭킹");
+				raking.setBounds(100,180,140,40);
+				raking.setFont(new Font("Monospaced", Font.BOLD, 11));
+				raking.setForeground(Color.BLACK);
+				
+				
+				JLabel raking_ = new JLabel(String.valueOf(ranking));
+				raking_.setBounds(100,200,140,40);		
+				raking_.setForeground(Color.BLACK);
+				raking_.setFont(new Font("Monospaced", Font.BOLD, 20));
+				
+				
+				JLabel hyperlink = new JLabel("랭킹 보기");
+				hyperlink.setBounds(50,220,140,40);				
+				hyperlink.setForeground(Color.BLUE.darker());
+				hyperlink.setFont(new Font("Monospaced", Font.BOLD, 20));
+				hyperlink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				hyperlink.addMouseListener(new MouseAdapter() {
+					 
+				    @Override
+				    public void mouseClicked(MouseEvent e) {
+				        // the user clicks on the label
+				    
 
-			            try {
-							Desktop.getDesktop().browse(new URI("http://15.164.218.103/result.php?id=" + TetrisMain.userId));
-						} catch (URISyntaxException | IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-						
-			            
-			    }
-			 
-			    @Override
-			    public void mouseEntered(MouseEvent e) {
-			        // the mouse has entered the label
-			    }
-			 
-			    @Override
-			    public void mouseExited(MouseEvent e) {
-			        // the mouse has exited the label
-			    }
-			});
-			
-			
-			frame.add(record);
-			frame.add(userId);
-			frame.add(score);
-			frame.add(score_);
-			frame.add(raking);
-			frame.add(raking_);
-			frame.add(hyperlink);
+				            try {
+								Desktop.getDesktop().browse(new URI("http://15.164.218.103/result.php?id=" + TetrisMain.userId));
+							} catch (URISyntaxException | IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							
+				            
+				    }
+				 
+				    @Override
+				    public void mouseEntered(MouseEvent e) {
+				        // the mouse has entered the label
+				    }
+				 
+				    @Override
+				    public void mouseExited(MouseEvent e) {
+				        // the mouse has exited the label
+				    }
+				});
+				
+				
+				frame.add(record);
+				frame.add(userId);
+				frame.add(score);
+				frame.add(score_);
+				frame.add(raking);
+				frame.add(raking_);
+				frame.add(hyperlink);
+			}else {
+				JLabel record = new JLabel("게임결과"); 
+				record.setBounds(100,40,100,40);
+				record.setFont(new Font("Monospaced", Font.BOLD, 13));
+				record.setForeground(Color.BLACK);
+				JLabel userId = new JLabel(TetrisMain.userId + " 님");
+				userId.setBounds(100, 100, 100, 40);
+				userId.setForeground(Color.black);
+				
+				
+				JLabel score = new JLabel("☆☆☆☆점수 갱신☆☆☆☆");
+				score.setBounds(100, 120, 200, 40);
+				score.setFont(new Font("Monospaced", Font.BOLD, 11));
+				score.setForeground(Color.BLACK);
+				
+				
+				JLabel score_ = new JLabel(String.valueOf(gameScore));
+				score_.setBounds(100, 140, 100, 40);
+				score_.setForeground(Color.BLACK);
+				score_.setFont(new Font("Monospaced", Font.BOLD, 20));
+				
+				
+				JLabel raking = new JLabel("랭킹");
+				raking.setBounds(100,180,140,40);
+				raking.setFont(new Font("Monospaced", Font.BOLD, 11));
+				raking.setForeground(Color.BLACK);
+				
+				
+				JLabel raking_ = new JLabel(String.valueOf(ranking));
+				raking_.setBounds(100,200,140,40);		
+				raking_.setForeground(Color.BLACK);
+				raking_.setFont(new Font("Monospaced", Font.BOLD, 20));
+				
+				
+				JLabel hyperlink = new JLabel("랭킹 보기");
+				hyperlink.setBounds(50,220,140,40);				
+				hyperlink.setForeground(Color.BLUE.darker());
+				hyperlink.setFont(new Font("Monospaced", Font.BOLD, 20));
+				hyperlink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				hyperlink.addMouseListener(new MouseAdapter() {
+					 
+				    @Override
+				    public void mouseClicked(MouseEvent e) {
+				        // the user clicks on the label
+				    
+
+				            try {
+								Desktop.getDesktop().browse(new URI("http://15.164.218.103/result.php?id=" + TetrisMain.userId));
+							} catch (URISyntaxException | IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							
+				            
+				    }
+				 
+				    @Override
+				    public void mouseEntered(MouseEvent e) {
+				        // the mouse has entered the label
+				    }
+				 
+				    @Override
+				    public void mouseExited(MouseEvent e) {
+				        // the mouse has exited the label
+				    }
+				});
+				
+				
+				frame.add(record);
+				frame.add(userId);
+				frame.add(score);
+				frame.add(score_);
+				frame.add(raking);
+				frame.add(raking_);
+				frame.add(hyperlink);
+			}
 			
 		}else if(this.info.equalsIgnoreCase("low")) {
-			JLabel record = new JLabel("게임결과"); 
-			record.setBounds(100,40,100,40);
-			record.setFont(new Font("Monospaced", Font.BOLD, 13));
-			record.setForeground(Color.BLACK);
-			
-			
-			JLabel userId = new JLabel(TetrisMain.userId + " 님");
-			userId.setBounds(100, 100, 100, 40);
-			userId.setForeground(Color.black);
-			
-			
-			JLabel score = new JLabel("점수");
-			score.setBounds(100, 120, 200, 40);
-			score.setFont(new Font("Monospaced", Font.BOLD, 11));
-			score.setForeground(Color.BLACK);
-			
-			
-			JLabel score_ = new JLabel(String.valueOf(gameScore));
-			score_.setBounds(100, 140, 100, 40);
-			score_.setForeground(Color.BLACK);
-			score_.setFont(new Font("Monospaced", Font.BOLD, 20));
-			
-			
-			JLabel raking = new JLabel("랭킹 ");
-			raking.setBounds(100,180,200,40);
-			raking.setFont(new Font("Monospaced", Font.BOLD, 11));
-			raking.setForeground(Color.BLACK);
-			
-			
-			JLabel raking_ = new JLabel(String.valueOf(ranking));
-			raking_.setBounds(100,200,140,40);			
-			raking_.setForeground(Color.BLACK);
-			raking_.setFont(new Font("Monospaced", Font.BOLD, 20));
-			
-			JLabel hyperlink = new JLabel("랭킹 보기");
-			hyperlink.setBounds(50,220,140,40);				
-			hyperlink.setForeground(Color.BLUE.darker());
-			hyperlink.setFont(new Font("Monospaced", Font.BOLD, 20));
-			hyperlink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			hyperlink.addMouseListener(new MouseAdapter() {
-				 
-			    @Override
-			    public void mouseClicked(MouseEvent e) {
-			        // the user clicks on the label
-			    
+			if(TetrisMain.GameMode == 3) {
+				JLabel record = new JLabel("게임결과"); 
+				record.setBounds(100,40,100,40);
+				record.setFont(new Font("Monospaced", Font.BOLD, 13));
+				record.setForeground(Color.BLACK);
+				
+				
+				JLabel userId = new JLabel(TetrisMain.userId + " 님");
+				userId.setBounds(100, 100, 100, 40);
+				userId.setForeground(Color.black);
+				
+				
+				JLabel score = new JLabel("경과시간");
+				score.setBounds(100, 120, 200, 40);
+				score.setFont(new Font("Monospaced", Font.BOLD, 11));
+				score.setForeground(Color.BLACK);
+				
+				
+				JLabel score_ = new JLabel(String.valueOf(time));
+				score_.setBounds(100, 140, 100, 40);
+				score_.setForeground(Color.BLACK);
+				score_.setFont(new Font("Monospaced", Font.BOLD, 20));
+				
+				
+				JLabel raking = new JLabel("랭킹 ");
+				raking.setBounds(100,180,200,40);
+				raking.setFont(new Font("Monospaced", Font.BOLD, 11));
+				raking.setForeground(Color.BLACK);
+				
+				
+				JLabel raking_ = new JLabel(String.valueOf(ranking));
+				raking_.setBounds(100,200,140,40);			
+				raking_.setForeground(Color.BLACK);
+				raking_.setFont(new Font("Monospaced", Font.BOLD, 20));
+				
+				JLabel hyperlink = new JLabel("랭킹 보기");
+				hyperlink.setBounds(50,220,140,40);				
+				hyperlink.setForeground(Color.BLUE.darker());
+				hyperlink.setFont(new Font("Monospaced", Font.BOLD, 20));
+				hyperlink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				hyperlink.addMouseListener(new MouseAdapter() {
+					 
+				    @Override
+				    public void mouseClicked(MouseEvent e) {
+				        // the user clicks on the label
+				    
 
-			            try {
-							Desktop.getDesktop().browse(new URI("http://15.164.218.103/result.php?id=" + TetrisMain.userId));
-						} catch (URISyntaxException | IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-						
-			            
-			    }
-			 
-			    @Override
-			    public void mouseEntered(MouseEvent e) {
-			        // the mouse has entered the label
-			    }
-			 
-			    @Override
-			    public void mouseExited(MouseEvent e) {
-			        // the mouse has exited the label
-			    }
-			});
-			
-			
-			frame.add(record);
-			frame.add(userId);
-			frame.add(score);
-			frame.add(score_);
-			frame.add(raking);
-			frame.add(raking_);
-			frame.add(hyperlink);
+				            try {
+								Desktop.getDesktop().browse(new URI("http://15.164.218.103/result.php?id=" + TetrisMain.userId));
+							} catch (URISyntaxException | IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							
+				            
+				    }
+				 
+				    @Override
+				    public void mouseEntered(MouseEvent e) {
+				        // the mouse has entered the label
+				    }
+				 
+				    @Override
+				    public void mouseExited(MouseEvent e) {
+				        // the mouse has exited the label
+				    }
+				});
+				
+				
+				frame.add(record);
+				frame.add(userId);
+				frame.add(score);
+				frame.add(score_);
+				frame.add(raking);
+				frame.add(raking_);
+				frame.add(hyperlink);
+			}else {
+				JLabel record = new JLabel("게임결과"); 
+				record.setBounds(100,40,100,40);
+				record.setFont(new Font("Monospaced", Font.BOLD, 13));
+				record.setForeground(Color.BLACK);
+				
+				
+				JLabel userId = new JLabel(TetrisMain.userId + " 님");
+				userId.setBounds(100, 100, 100, 40);
+				userId.setForeground(Color.black);
+				
+				
+				JLabel score = new JLabel("점수");
+				score.setBounds(100, 120, 200, 40);
+				score.setFont(new Font("Monospaced", Font.BOLD, 11));
+				score.setForeground(Color.BLACK);
+				
+				
+				JLabel score_ = new JLabel(String.valueOf(gameScore));
+				score_.setBounds(100, 140, 100, 40);
+				score_.setForeground(Color.BLACK);
+				score_.setFont(new Font("Monospaced", Font.BOLD, 20));
+				
+				
+				JLabel raking = new JLabel("랭킹 ");
+				raking.setBounds(100,180,200,40);
+				raking.setFont(new Font("Monospaced", Font.BOLD, 11));
+				raking.setForeground(Color.BLACK);
+				
+				
+				JLabel raking_ = new JLabel(String.valueOf(ranking));
+				raking_.setBounds(100,200,140,40);			
+				raking_.setForeground(Color.BLACK);
+				raking_.setFont(new Font("Monospaced", Font.BOLD, 20));
+				
+				JLabel hyperlink = new JLabel("랭킹 보기");
+				hyperlink.setBounds(50,220,140,40);				
+				hyperlink.setForeground(Color.BLUE.darker());
+				hyperlink.setFont(new Font("Monospaced", Font.BOLD, 20));
+				hyperlink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				hyperlink.addMouseListener(new MouseAdapter() {
+					 
+				    @Override
+				    public void mouseClicked(MouseEvent e) {
+				        // the user clicks on the label
+				    
+
+				            try {
+								Desktop.getDesktop().browse(new URI("http://15.164.218.103/result.php?id=" + TetrisMain.userId));
+							} catch (URISyntaxException | IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							
+				            
+				    }
+				 
+				    @Override
+				    public void mouseEntered(MouseEvent e) {
+				        // the mouse has entered the label
+				    }
+				 
+				    @Override
+				    public void mouseExited(MouseEvent e) {
+				        // the mouse has exited the label
+				    }
+				});
+				
+				
+				frame.add(record);
+				frame.add(userId);
+				frame.add(score);
+				frame.add(score_);
+				frame.add(raking);
+				frame.add(raking_);
+				frame.add(hyperlink);
+			}
 		}
 		
 	}
