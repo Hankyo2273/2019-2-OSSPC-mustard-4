@@ -13,7 +13,7 @@ public class Button {
    JFrame frame, keyFrame;
    JPanel centerPanel;
    JButton eventBtn;
-   JButton[] btn = new JButton[6];
+   JButton[] btn = new JButton[8];
    Container contentPane;
    String keyString = null;
    private static int z_key = 90, left_key = 37, right_key=39, down_key=40, up_key=38, space_key=32, shift_key=16, keyCode, pk=0;
@@ -75,7 +75,7 @@ public class Button {
    public void FrameShow() {
     
     // Frame
-    frame = new JFrame("Å° ï¿½ï¿½ï¿½ï¿½");
+    frame = new JFrame("KEY SETTING");
      frame.setPreferredSize(new Dimension(350, 250));
      frame.setLocation(350, 250);
      frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ DISPOSE_ON_CLOSEï¿½ï¿½ ï¿½Øºï¿½ ï¿½ï¿½.
@@ -87,8 +87,8 @@ public class Button {
      contentPane = frame.getContentPane();
 
      // ï¿½Ð³Î¿ï¿½ ï¿½ï¿½Æ° 6ï¿½ï¿½ ï¿½ß°ï¿½
-     centerPanel.setLayout(new GridLayout(3, 2));
-     for (int i = 0; i < 6; i++) {
+     centerPanel.setLayout(new GridLayout(4, 2));
+     for (int i = 0; i < 8; i++) {
       btn[i] = new JButton();
 
       centerPanel.add(btn[i]);
@@ -103,6 +103,8 @@ public class Button {
      btn[3].setText(" Rotation ");
      btn[4].setText(" Drop ");
      btn[5].setText(" Hold ");
+     btn[6].setText(" Reverse ");
+     btn[7].setText(" - Mustard - ");
 
      btn[0].setName("b0");
      btn[1].setName("b1");
@@ -110,6 +112,8 @@ public class Button {
      btn[3].setName("b3");
      btn[4].setName("b4");
      btn[5].setName("b5");
+     btn[6].setName("b6");
+     btn[7].setName("b7");
      
     
      
@@ -146,7 +150,7 @@ public class Button {
     public void actionPerformed(ActionEvent event) {
        eventBtn = (JButton) event.getSource();   
       
-       keyFrame = new JFrame("ï¿½ï¿½Æ°ï¿½ï¿½ï¿½ï¿½");
+       keyFrame = new JFrame("KEY SETTING");
        JPanel panel1 = new JPanel();
        JPanel panel2 = new JPanel();
    
@@ -170,39 +174,45 @@ public class Button {
        if ("b0".equals( eventBtn.getName() ) ) {
           keyFrame.setVisible(true);
           // ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ï¿½ï¿½
-          keyLabel = new JLabel("Left Å°ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½.");
+          keyLabel = new JLabel("Left Å°¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
           pk=0;
           
        } else if("b1".equals( eventBtn.getName() ) ) {
           keyFrame.setVisible(true);
           // ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ï¿½ï¿½
-          keyLabel = new JLabel("Right Å°ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½.");
+          keyLabel = new JLabel("Right Å°¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
           pk=1;
          
        } else if ("b2".equals( eventBtn.getName() ) ) {
           keyFrame.setVisible(true);
           // ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ï¿½ï¿½
-          keyLabel = new JLabel("Down Å°ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½.");
+          keyLabel = new JLabel("Down Å°¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
           pk=2;
          
        } else if ("b3".equals( eventBtn.getName() ) ) {
           keyFrame.setVisible(true);
           // ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ï¿½ï¿½
-          keyLabel = new JLabel("Rotation Å°ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½.");
+          keyLabel = new JLabel("Rotation Å°¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
           pk=3;
          
        } else if ("b4".equals( eventBtn.getName() ) ) {
           keyFrame.setVisible(true);
           // ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ï¿½ï¿½
-          keyLabel = new JLabel("Drop Å°ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½.");
+          keyLabel = new JLabel("Drop Å°¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
           pk=4;
          
        } else if ("b5".equals( eventBtn.getName() ) ) {
           keyFrame.setVisible(true);
           // ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ï¿½ï¿½
-          keyLabel = new JLabel("Hold Å°ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½.");
+          keyLabel = new JLabel("Hold Å°¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
           pk=5;
-       }
+          
+       } else if ("b6".equals( eventBtn.getName() ) ) {
+          keyFrame.setVisible(true);
+          // ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ï¿½ï¿½
+          keyLabel = new JLabel("Reverse Å°¸¦ ÀÔ·ÂÇÏ¼¼¿ä.");
+          pk=6;
+       } 
       
       // ï¿½Ð³ï¿½ ï¿½ß°ï¿½
       
@@ -234,6 +244,7 @@ public class Button {
        keyString = e.getKeyText(e.getKeyCode());
        keyCode = e.getKeyCode();
        System.out.println(e.getKeyCode());
+       
        if (e.getKeyCode() != 10) {
           if (pk == 0) {
              if(keyCode == right_key) {
@@ -246,7 +257,9 @@ public class Button {
                 warning_Drop();
              } else if(keyCode == shift_key) {
                 warning_Hold();
-             } else {
+             } else if(keyCode == z_key) {
+            	 warning_Reverse();
+             }  else {
                 setLeft_key(keyCode);
                 btn[0].setText("Left : "+ keyString);
                 keyFrame.setVisible(false); // ï¿½Ô·ï¿½Ã¢ ï¿½ï¿½ï¿½ï¿½
@@ -263,7 +276,10 @@ public class Button {
                 warning_Drop();
              } else if(keyCode == shift_key) {
                 warning_Hold();
-             } else {
+             } else if(keyCode == z_key) {
+            	 warning_Reverse();
+             }
+             else {
                 setRight_key(keyCode);
                 btn[1].setText("Right : "+ keyString);
                 keyFrame.setVisible(false); // ï¿½Ô·ï¿½Ã¢ ï¿½ï¿½ï¿½ï¿½   
@@ -280,7 +296,10 @@ public class Button {
                 warning_Drop();
              } else if(keyCode == shift_key) {
                 warning_Hold();
-             } else {
+             } else if(keyCode == z_key) {
+            	 warning_Reverse();
+             }
+             else {
                 setDown_key(keyCode);
                 btn[2].setText("Down : "+ keyString);
                 keyFrame.setVisible(false); // ï¿½Ô·ï¿½Ã¢ ï¿½ï¿½ï¿½ï¿½   
@@ -297,7 +316,10 @@ public class Button {
                 warning_Drop();
              } else if(keyCode == shift_key) {
                 warning_Hold();
-             } else {
+             } else if(keyCode == z_key) {
+            	 warning_Reverse();
+             }
+             else {
                 setUp_key(keyCode);
                 btn[3].setText("Rotation : "+ keyString);
                 keyFrame.setVisible(false); // ï¿½Ô·ï¿½Ã¢ ï¿½ï¿½ï¿½ï¿½   
@@ -314,7 +336,10 @@ public class Button {
                 warning_Down();
              } else if(keyCode == shift_key) {
                 warning_Hold();
-             } else {
+             } else if(keyCode == z_key) {
+            	 warning_Reverse();
+             }
+             else {
                 setSpace_key(keyCode);
                 btn[4].setText("Drop : "+ keyString);
                 keyFrame.setVisible(false); // ï¿½Ô·ï¿½Ã¢ ï¿½ï¿½ï¿½ï¿½   
@@ -331,34 +356,63 @@ public class Button {
                 warning_Down();
              } else if(keyCode == space_key) {
                 warning_Drop();
-             } else {
+             } else if(keyCode == z_key) {
+            	 warning_Reverse();
+             }
+             else {
                 setShift_key(keyCode);
                 btn[5].setText("Hold : "+ keyString);
                 keyFrame.setVisible(false); // ï¿½Ô·ï¿½Ã¢ ï¿½ï¿½ï¿½ï¿½   
                 }
-          } else {keyFrame.setVisible(false);
           }
-      }
+      
+          else if (pk == 6){
+              if (keyCode == left_key) {
+                 warning_Left();                
+              } else if(keyCode == right_key) {
+                 warning_Right();
+              } else if(keyCode == up_key) {
+                 warning_Up();
+              } else if(keyCode == down_key) {
+                 warning_Down();
+              } else if(keyCode == shift_key) {
+                 warning_Hold();
+              } else if(keyCode == space_key) {
+             	 warning_Drop();
+              }
+              else {
+                 setZ_key(keyCode);
+                 btn[6].setText("Reverse : "+ keyString);
+                 keyFrame.setVisible(false); // ï¿½Ô·ï¿½Ã¢ ï¿½ï¿½ï¿½ï¿½   
+                 }
+           }
+          else { keyFrame.setVisible(false);
+          }
+       }
     }
     
    public void warning_Left() {
-      JOptionPane.showMessageDialog(null, "left_key ï¿½ï¿½ ï¿½ßºï¿½ï¿½Ë´Ï´ï¿½. ï¿½Ù¸ï¿½ Å°ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.", "ï¿½ßºï¿½ï¿½ï¿½ key", JOptionPane.ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(null, "left_key ¿Í Áßº¹µÇ¾ú½À´Ï´Ù. ´Ù¸¥ Å°¸¦ ÀÔ·ÂÇÏ¼¼¿ä.", "Error", JOptionPane.ERROR_MESSAGE);
    }
    public void warning_Right() {
-      JOptionPane.showMessageDialog(null, "right_key ï¿½ï¿½ ï¿½ßºï¿½ï¿½Ë´Ï´ï¿½. ï¿½Ù¸ï¿½ Å°ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.", "ï¿½ßºï¿½ï¿½ï¿½ key", JOptionPane.ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(null, "right_key ¿Í Áßº¹µÇ¾ú½À´Ï´Ù. ´Ù¸¥ Å°¸¦ ÀÔ·ÂÇÏ¼¼¿ä.", "Error", JOptionPane.ERROR_MESSAGE);
    }
    public void warning_Up() {
-      JOptionPane.showMessageDialog(null, "up_key ï¿½ï¿½ ï¿½ßºï¿½ï¿½Ë´Ï´ï¿½. ï¿½Ù¸ï¿½ Å°ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.", "ï¿½ßºï¿½ï¿½ï¿½ key", JOptionPane.ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(null, "up_key ¿Í Áßº¹µÇ¾ú½À´Ï´Ù. ´Ù¸¥ Å°¸¦ ÀÔ·ÂÇÏ¼¼¿ä.", "Error", JOptionPane.ERROR_MESSAGE);
    }
    public void warning_Down() {
-      JOptionPane.showMessageDialog(null, "down_key ï¿½ï¿½ ï¿½ßºï¿½ï¿½Ë´Ï´ï¿½. ï¿½Ù¸ï¿½ Å°ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.", "ï¿½ßºï¿½ï¿½ï¿½ key", JOptionPane.ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(null, "down_key ¿Í Áßº¹µÇ¾ú½À´Ï´Ù. ´Ù¸¥ Å°¸¦ ÀÔ·ÂÇÏ¼¼¿ä.", "Error", JOptionPane.ERROR_MESSAGE);
    }
    public void warning_Drop() {
-      JOptionPane.showMessageDialog(null, "drop_key ï¿½ï¿½ ï¿½ßºï¿½ï¿½Ë´Ï´ï¿½. ï¿½Ù¸ï¿½ Å°ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.", "ï¿½ßºï¿½ï¿½ï¿½ key", JOptionPane.ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(null, "drop_key ¿Í Áßº¹µÇ¾ú½À´Ï´Ù. ´Ù¸¥ Å°¸¦ ÀÔ·ÂÇÏ¼¼¿ä.", "Error", JOptionPane.ERROR_MESSAGE);
    }
    public void warning_Hold() {
-      JOptionPane.showMessageDialog(null, "hold_key ï¿½ï¿½ ï¿½ßºï¿½ï¿½Ë´Ï´ï¿½. ï¿½Ù¸ï¿½ Å°ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.", "ï¿½ßºï¿½ï¿½ï¿½ key", JOptionPane.ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(null, "hold_key ¿Í Áßº¹µÇ¾ú½À´Ï´Ù. ´Ù¸¥ Å°¸¦ ÀÔ·ÂÇÏ¼¼¿ä.", "Error", JOptionPane.ERROR_MESSAGE);
    }
+   public void warning_Reverse() {
+	  JOptionPane.showMessageDialog(null, "reverse_key ¿Í Áßº¹µÇ¾ú½À´Ï´Ù. ´Ù¸¥ Å°¸¦ ÀÔ·ÂÇÏ¼¼¿ä.", "Error", JOptionPane.ERROR_MESSAGE);
+   }
+   
 
    @Override
    public void keyReleased(KeyEvent e) {

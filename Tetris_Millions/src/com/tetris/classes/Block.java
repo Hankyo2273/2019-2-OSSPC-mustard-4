@@ -6,6 +6,16 @@ import java.io.Serializable;
 
 import com.tetris.window.TetrisBoard;
 
+
+/**
+ * 
+ * @author minshik
+ * 2019/12/04 01:11 
+ * 내용 :  boolean isCustomBlock 변수 ,  getter, setter 추가
+ * 
+ *
+ */
+
 public class Block implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -17,6 +27,7 @@ public class Block implements Serializable {
 	private Color color;
 	private Color ghostColor;	
 	private boolean ghost;
+	private boolean isCustomBlock;
 	
 	
 	/**
@@ -30,6 +41,7 @@ public class Block implements Serializable {
 		this.fixGridY = fixGridY;
 		this.color=color;
 		this.ghostColor = ghostColor;
+		this.isCustomBlock = false;
 	}
 	
 
@@ -78,4 +90,36 @@ public class Block implements Serializable {
 	public void setFixGridY(int fixGridY) {this.fixGridY = fixGridY;}
 	public void setFixGridXY(int fixGridX, int fixGridY){this.fixGridX = fixGridX;this.fixGridY = fixGridY;}
 	public void setGhostView(boolean b){this.ghost = b;}
+
+	
+	public Color getColor() {return color;}
+	public void setColor(Color color) {this.color = color;}
+
+	
+	
+	
+	
+	
+	/**
+	 * @author minshik 2019-12-04
+	 * @param isCustomBlock 커스컴 맵 만들 떄 들어가는 블럭에 들어갈 세팅값 true
+	 */
+	public void setCustomBlock(boolean isCustomBlock) {
+		this.isCustomBlock = isCustomBlock;
+	}
+
+	/**
+	 * @author minshik 2019-12-04
+	 * @return true, false
+	 */
+	
+	public boolean isCustomBlock() {
+		return isCustomBlock;
+	}
+
+
+	
+	
+	
+	
 }

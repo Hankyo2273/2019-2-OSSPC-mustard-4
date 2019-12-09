@@ -41,16 +41,15 @@ public class Tetris extends JFrame implements ActionListener{
 		JMenuBar mnBar = new JMenuBar(); 
 		JMenu mnGame = new JMenu("게임하기");
 		JMenu stGame = new JMenu("키 조작");	 //상단에 "키 조작" menu 삽입. (millions)
-		JMenu test = new JMenu("테스트");
+		
 		
 		mnGame.add(itemServerStart); 
 		mnGame.add(itemClientStart);
-		
 		stGame.add(itemKeySet);				//millions
 		
-		mnBar.add(mnGame);
-		mnBar.add(stGame);					//millions
-		mnBar.add(test); 
+//		mnBar.add(mnGame); min 
+//		mnBar.add(stGame); min					//millions
+		
 		
 		this.setJMenuBar(mnBar); // 메뉴세팅
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -83,6 +82,8 @@ public class Tetris extends JFrame implements ActionListener{
 			}
 			
 		});
+		
+		start();
 		
 	}
 
@@ -216,4 +217,73 @@ public class Tetris extends JFrame implements ActionListener{
 	public boolean isServer() {return isServer;}
 	public void setServer(boolean isServer) {this.isServer = isServer;}
 	public void changeSpeed(Integer speed) {board.changeSpeed(speed);}
+	public void start() {
+		String ip=null;
+		int port=0;
+		String nickName=null;
+		
+		// 1. 서버로 시작하기 버튼을 눌렀을 경우
+			
+			// 포트번호를 입력받는 다이얼로그를 띄우고 
+			String sp = "9500";
+			
+			// 포트번호를 입력받는다. 
+			if(sp!=null && !sp.equals(""))port = Integer.parseInt(sp);  
+			
+			// 닉네임을 입력받는 다이얼로그도 띄우고 닉네임을 입력받는다.
+			// 닉네임을 입력하지 않으면 null 이다.
+			
+			
+			
+			// 포트번호를 입력받게 되면
+			if(port!=0){ // 포트에 입력값이 들어왔고 ( 사실 이렇게 예외처리 하면 안됨...)
+				/**
+				 *  게임 서버를 만들지 않았다면 아까 입력 받았던  포트번호를 넘겨주어 게임서버를 만든다.
+				 *  startServer()메소드로 서버를 실행시킨다.
+				 *  만든 server에서는 넘겨준 포트번호로 서버소켓을 만들고 스레드로 서버를 동작시킨다.
+				 */
+				if(server == null) server = new GameServer(port);
+				server.startServer();
+				
+				
+				try {
+					
+					// 현재 접속 local_ip 이걸 바꾸? 
+					ip = InetAddress.getLocalHost().getHostAddress();
+//					ip = ;
+//					ip = "10.80.19.19";
+				} 
+				catch (UnknownHostException e1) {
+					e1.printStackTrace();
+				}
+				if(ip!=null){// 현재 컴퓨터의 local_ip 정보를 받으면 , 사실상 무조건 받기 떄문에 무조건 실행됨
+					
+					// 클라이언트 객체 생성 및 소켓만듬
+					client = new GameClient(this,ip,port,nickName);
+					
+					if(client.start()){ // 클라이언트 소켓 생성과 I/O 처리까지 완료되었고 서버소켓과 연결도 잘 되었을 경우
+						
+						
+						// 보드에 표시하는 부분
+						
+						itemServerStart.setEnabled(false); // 예외처리 (서버로 접속하기 버튼 비활성화)
+						itemClientStart.setEnabled(false); // 예외처리 (클라이언트로 접속하기 버튼 비활성화)
+						
+						board.setClient(client);
+						board.getBtnStart().setEnabled(true);
+						board.startNetworking(ip, port, nickName);
+						
+						
+						isNetwork = true;
+						isServer = true;
+						
+					}
+					
+				}
+				
+			}
+			
+			
+		
+	}
 }

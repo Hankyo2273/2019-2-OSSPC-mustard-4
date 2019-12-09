@@ -56,7 +56,7 @@ public class GameClient implements Runnable{
 	public boolean execute(){
 		try{
 			socket = new Socket(ip,port);
-			ip = InetAddress.getLocalHost().getHostAddress(); // 왜 여기 있지??..? 
+			ip = InetAddress.getLocalHost().getHostAddress(); 
 			oos = new ObjectOutputStream(socket.getOutputStream()); // 아웃풋 스트림
 			ois = new ObjectInputStream(socket.getInputStream());
 			System.out.println("클라이언트가 실행 중입니다.");
@@ -68,7 +68,6 @@ public class GameClient implements Runnable{
 			e.printStackTrace();
 			return false;
 		}
-
 		tetris.getBoard().clearMessage(); 
 		
 		//이름보내기
@@ -160,6 +159,8 @@ public class GameClient implements Runnable{
 			e.printStackTrace();
 		}
 	}//sendData()
+	
+	
 	
 	//요청하기 : 상대블록 그리기 HK
 		public void drawBlockShap(TetrisBlock shap) {
@@ -273,9 +274,11 @@ public class GameClient implements Runnable{
 		DataShip data = new DataShip(DataShip.SET_INDEX);
 		send(data);
 	}
+	
 	public void reSetIndex(int index){
 		this.index = index;
 	}
+	
 	//요청하기 : 게임종료
 	public void gameover(){
 		DataShip data = new DataShip(DataShip.GAME_OVER);
@@ -288,10 +291,12 @@ public class GameClient implements Runnable{
 		ImageIcon popupicon = new ImageIcon(TetrisMain.class.getResource("../../../Images/GAMEOVER.PNG"));
 		JOptionPane.showMessageDialog(null, null, "The End", JOptionPane.ERROR_MESSAGE, popupicon);
 	}
+	
 	public void reGameover(String msg, int totalAdd){
 		tetris.printSystemMessage(msg);
 		tetris.printSystemMessage("TOTAL ADD : "+totalAdd);
 	}
+	
 	public void printMessage(String msg){
 		DataShip data = new DataShip(DataShip.PRINT_MESSAGE);
 		data.setMsg(msg);

@@ -32,8 +32,6 @@ public class Login extends JFrame implements ActionListener{
 	    public Login()
 	    {
 	          setTitle("로그인");
-  
-	          
 	          // FlowLayout사용
 	          setLayout( new FlowLayout() );
 	          // Border로 영역 생성
@@ -159,6 +157,7 @@ public class Login extends JFrame implements ActionListener{
 					if(response2.getSuccess().equalsIgnoreCase("ok")) { 
 						JOptionPane.showMessageDialog(null,"로그인성공");
 						TetrisMain.userId = id;// 로그인 성공시 전역변수로 아이디를 저장함
+						TetrisMain.isLogin = true; // 로그인 유무 저장
 						dispose();// 로그인 창 끔
 						new ModeSelectionWindow(); // 모드 선택창 띄움
 					}else {

@@ -71,9 +71,10 @@ public class Register implements ActionListener{
         frame.setBounds(40,40,500, 300);
         frame.getContentPane().setLayout(null);
         frame.setVisible(true); // 보임
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // close 닫기 
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE); // close 닫기  창만
         frame.setResizable(true); // 사이즈 조절 못함
         frame.setLocationRelativeTo(null);
+        
 	}
 	
 	
